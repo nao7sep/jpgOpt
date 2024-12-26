@@ -1,6 +1,6 @@
 ﻿using yyLib;
 
-namespace _jpgOpt
+namespace jpgOpt
 {
     class Program
     {
