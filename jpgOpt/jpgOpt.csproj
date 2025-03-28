@@ -22,6 +22,9 @@
         <AssemblyVersion></AssemblyVersion>
         <FileVersion></FileVersion>
         <InformationalVersion></InformationalVersion>
+
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisMode>Recommended</AnalysisMode>
     </PropertyGroup>
 
     <ItemGroup>

@@ -6,10 +6,8 @@ namespace jpgOpt
 {
     public partial class App: Application
     {
-        public override void Initialize ()
-        {
+        public override void Initialize () =>
             AvaloniaXamlLoader.Load (this);
-        }
 
         public override void OnFrameworkInitializationCompleted ()
         {
