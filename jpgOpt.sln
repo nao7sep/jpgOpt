@@ -4,7 +4,7 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jpgOpt", "jpgOpt", "{99B40B02-813C-645E-FCE7-1270C344FB86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jpgOpt", "jpgOpt\jpgOpt\jpgOpt.csproj", "{9E645159-1030-90AA-EB83-DF7623665E14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jpgOpt", "jpgOpt\jpgOpt.csproj", "{9E645159-1030-90AA-EB83-DF7623665E14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
