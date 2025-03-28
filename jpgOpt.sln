@@ -1,9 +1,10 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.5.002.0
+VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jpgOpt", "jpgOpt\jpgOpt.csproj", "{B4DC113C-8079-40DF-998F-E71F67E9CF9C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jpgOpt", "jpgOpt", "{99B40B02-813C-645E-FCE7-1270C344FB86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jpgOpt", "jpgOpt\jpgOpt\jpgOpt.csproj", "{9E645159-1030-90AA-EB83-DF7623665E14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +12,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B4DC113C-8079-40DF-998F-E71F67E9CF9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4DC113C-8079-40DF-998F-E71F67E9CF9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4DC113C-8079-40DF-998F-E71F67E9CF9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4DC113C-8079-40DF-998F-E71F67E9CF9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E645159-1030-90AA-EB83-DF7623665E14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E645159-1030-90AA-EB83-DF7623665E14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E645159-1030-90AA-EB83-DF7623665E14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E645159-1030-90AA-EB83-DF7623665E14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9E645159-1030-90AA-EB83-DF7623665E14} = {99B40B02-813C-645E-FCE7-1270C344FB86}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F52EA457-1FAA-47E8-B182-0E4CC39A1D37}
+		SolutionGuid = {E5D643B2-6795-410C-B1B5-C44DB8027E38}
 	EndGlobalSection
 EndGlobal
