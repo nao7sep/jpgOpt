@@ -1,11 +1,12 @@
 using Avalonia.Controls;
 
-namespace jpgOpt;
-
-public partial class MainWindow : Window
+namespace jpgOpt
 {
-    public MainWindow()
+    public partial class MainWindow: Window
     {
-        InitializeComponent();
+        public MainWindow ()
+        {
+            InitializeComponent ();
+        }
     }
 }
