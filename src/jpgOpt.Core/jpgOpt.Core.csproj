@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\pawKit\src\pawKit.Core\pawKit.Core.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -18,4 +18,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\jpgOpt.Core\jpgOpt.Core.csproj" />
+  </ItemGroup>
+
 </Project>
