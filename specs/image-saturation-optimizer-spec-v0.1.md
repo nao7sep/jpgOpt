@@ -1,12 +1,6 @@
-﻿<!-- nao7sep | o1 & o3-mini-high | 2025-04-01T04:41:56Z -->
+﻿<!-- 2025-04-01T04:41:56Z -->
 
 # Image Saturation Optimizer Spec v0.1
-
-- **Author:** nao7sep
-- **Last Updated:** 2025-04-01
-- **Version:** 0.1
-
----
 
 ## Table of Contents
 1. [Introduction & Goals](#introduction--goals)
