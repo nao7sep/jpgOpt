@@ -1,9 +1,8 @@
-namespace jpgOpt.Core.Enums
+namespace jpgOpt.Core.Enums;
+
+public enum NotificationType
 {
-    public enum NotificationType
-    {
-        Info,
-        Warning,
-        Error
-    }
+    Info,
+    Warning,
+    Error
 }
