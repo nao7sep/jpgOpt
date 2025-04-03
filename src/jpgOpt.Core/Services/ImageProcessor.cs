@@ -4,67 +4,7 @@ namespace jpgOpt.Core.Services
 {
     public static class ImageProcessor
     {
-        /// <summary>
-        /// Process an image from a file path and write to a file.
-        /// </summary>
-        public static void ProcessImage (string inputFilePath,
-            float linearStretchBlackPointPercentage, float linearStretchWhitePointPercentage,
-            float saturationPercentage, bool adaptiveSharpen, bool removeGps, bool removeAllMetadata,
-            string outputDirectoryPath, string outputFileName, MagickFormat format, uint? jpegQuality)
-        {
-            using var inputStream = new FileStream (inputFilePath, FileMode.Open, FileAccess.Read);
-            var outputFilePath = Path.GetFullPath (Path.Combine (outputDirectoryPath, outputFileName));
-            using var outputStream = new FileStream (outputFilePath, FileMode.Create, FileAccess.Write);
-
-            ProcessImageInternal (inputStream, linearStretchBlackPointPercentage, linearStretchWhitePointPercentage,
-                saturationPercentage, adaptiveSharpen, removeGps, removeAllMetadata, outputStream, format, jpegQuality);
-        }
-
-        /// <summary>
-        /// Process an image from a stream and write to a file.
-        /// </summary>
         public static void ProcessImage (Stream inputStream,
-            float linearStretchBlackPointPercentage, float linearStretchWhitePointPercentage,
-            float saturationPercentage, bool adaptiveSharpen, bool removeGps, bool removeAllMetadata,
-            string outputDirectoryPath, string outputFileName, MagickFormat format, uint? jpegQuality)
-        {
-            var outputFilePath = Path.GetFullPath (Path.Combine (outputDirectoryPath, outputFileName));
-            using var outputStream = new FileStream (outputFilePath, FileMode.Create, FileAccess.Write);
-
-            ProcessImageInternal (inputStream, linearStretchBlackPointPercentage, linearStretchWhitePointPercentage,
-                saturationPercentage, adaptiveSharpen, removeGps, removeAllMetadata, outputStream, format, jpegQuality);
-        }
-
-        /// <summary>
-        /// Process an image from a file path and write to a stream.
-        /// </summary>
-        public static void ProcessImage (string inputFilePath,
-            float linearStretchBlackPointPercentage, float linearStretchWhitePointPercentage,
-            float saturationPercentage, bool adaptiveSharpen, bool removeGps, bool removeAllMetadata,
-            Stream outputStream, MagickFormat format, uint? jpegQuality)
-        {
-            using var inputStream = new FileStream (inputFilePath, FileMode.Open, FileAccess.Read);
-
-            ProcessImageInternal (inputStream, linearStretchBlackPointPercentage, linearStretchWhitePointPercentage,
-                saturationPercentage, adaptiveSharpen, removeGps, removeAllMetadata, outputStream, format, jpegQuality);
-        }
-
-        /// <summary>
-        /// Process an image from a stream and write to a stream.
-        /// </summary>
-        public static void ProcessImage (Stream inputStream,
-            float linearStretchBlackPointPercentage, float linearStretchWhitePointPercentage,
-            float saturationPercentage, bool adaptiveSharpen, bool removeGps, bool removeAllMetadata,
-            Stream outputStream, MagickFormat format, uint? jpegQuality)
-        {
-            ProcessImageInternal (inputStream, linearStretchBlackPointPercentage, linearStretchWhitePointPercentage,
-               saturationPercentage, adaptiveSharpen, removeGps, removeAllMetadata, outputStream, format, jpegQuality);
-        }
-
-        /// <summary>
-        /// Internal method to process an image from an input stream and write to an output stream.
-        /// </summary>
-        private static void ProcessImageInternal (Stream inputStream,
             float linearStretchBlackPointPercentage, float linearStretchWhitePointPercentage,
             float saturationPercentage, bool adaptiveSharpen, bool removeGps, bool removeAllMetadata,
             Stream outputStream, MagickFormat format, uint? jpegQuality)
