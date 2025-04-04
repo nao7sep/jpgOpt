@@ -18,6 +18,9 @@ obj/
 # Visual Studio Code settings directory.
 .vscode/
 
+# JetBrains IDE settings directory.
+.idea/
+
 # ------------------------------------------------------------------------------
 # System Files
 # ------------------------------------------------------------------------------
