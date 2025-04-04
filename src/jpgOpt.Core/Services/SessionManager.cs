@@ -23,7 +23,7 @@ public class SessionManager
         if (string.IsNullOrWhiteSpace(outputDirectoryPath))
             throw new ArgumentException("Output directory path cannot be null or empty.", nameof(outputDirectoryPath));
 
-        PathOperations.EnsurePathIsFullyQualified(outputDirectoryPath);
+        PathOperations.EnsurePathIsFullyQualified(outputDirectoryPath, nameof(outputDirectoryPath));
 
         var normalizedDirectoryPath = PathOperations.NormalizePath(outputDirectoryPath);
         var filePath = PathOperations.CombineAbsolutePath(normalizedDirectoryPath, SessionFileName);
@@ -78,7 +78,7 @@ public class SessionManager
         if (string.IsNullOrWhiteSpace(filePath))
             throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
 
-        PathOperations.EnsurePathIsFullyQualified(filePath);
+        PathOperations.EnsurePathIsFullyQualified(filePath, nameof(filePath));
 
         var normalizedFilePath = PathOperations.NormalizePath(filePath);
         var directoryPath = Path.GetDirectoryName(normalizedFilePath);
@@ -95,7 +95,7 @@ public class SessionManager
         if (string.IsNullOrWhiteSpace(filePath))
             throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
 
-        PathOperations.EnsurePathIsFullyQualified(filePath);
+        PathOperations.EnsurePathIsFullyQualified(filePath, nameof(filePath));
 
         var normalizedFilePath = PathOperations.NormalizePath(filePath);
 
