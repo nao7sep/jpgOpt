@@ -2,8 +2,231 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="jpgOpt.App.MainWindow"
-        Title="jpgOpt.App">
-    Welcome to Avalonia!
+        xmlns:vm="using:jpgOpt.App.ViewModels"
+        xmlns:models="using:jpgOpt.App.Models"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="1080"
+        x:Class="jpgOpt.App.Views.MainWindow"
+        Title="jpgOpt"
+        Width="1280" Height="1080"
+        x:DataType="vm:MainWindowViewModel">
+
+    <Window.Styles>
+        <Style Selector="TextBlock.SectionHeader">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+
+        <Style Selector="Slider">
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <Style Selector="CheckBox">
+            <Setter Property="Margin" Value="0,5,0,5"/>
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="Margin" Value="0,5,5,5"/>
+            <Setter Property="Padding" Value="10,5"/>
+        </Style>
+    </Window.Styles>
+
+    <DockPanel>
+        <!-- Main Menu -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New Session" Command="{Binding NewSessionCommand}"/>
+                <MenuItem Header="_Open Session..." Command="{Binding OpenSessionCommand}"/>
+                <Separator/>
+                <MenuItem Header="_Add Images..." Command="{Binding AddImagesCommand}"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Command="{Binding CloseWindowCommand}"/>
+            </MenuItem>
+
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Reset All Parameters" Command="{Binding ResetAllParametersCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- Statistics Panel -->
+        <Border DockPanel.Dock="Top" BorderBrush="Transparent" BorderThickness="0" Margin="5,5,5,5" Padding="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Image Count -->
+                <Border Grid.Column="0" Margin="2" CornerRadius="4" Background="{DynamicResource SystemAccentColorLight1}" Padding="10,5">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding ImageCount}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
+                        <TextBlock Text="Images" HorizontalAlignment="Center" FontSize="12" Foreground="White"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Pending Tasks -->
+                <Border Grid.Column="1" Margin="2" CornerRadius="4" Background="#FF9900" Padding="10,5">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding PendingTasksCount}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
+                        <TextBlock Text="Pending" HorizontalAlignment="Center" FontSize="12" Foreground="White"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Completed Tasks -->
+                <Border Grid.Column="2" Margin="2" CornerRadius="4" Background="#00CC66" Padding="10,5">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding CompletedTasksCount}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
+                        <TextBlock Text="Completed" HorizontalAlignment="Center" FontSize="12" Foreground="White"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Grid -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <!-- Middle column for GridSplitter -->
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="400"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Thumbnail List -->
+            <Border Grid.Column="0" Grid.Row="0" BorderBrush="Gray" BorderThickness="1" Margin="5">
+                <ScrollViewer>
+                    <ItemsControl x:Name="ThumbnailList">
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+
+            <!-- GridSplitter -->
+            <GridSplitter Grid.Column="1" Grid.Row="0" Width="5"
+                          HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+
+            <!-- Controls Panel -->
+            <ScrollViewer Grid.Column="2" Grid.Row="0" Margin="5">
+                <StackPanel Margin="10">
+                    <!-- Per-Image Settings Header -->
+                    <Border Background="{DynamicResource SystemAccentColorLight2}" CornerRadius="4" Margin="0,0,0,10" Padding="10,5">
+                        <TextBlock Text="Image-Specific Settings" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    </Border>
+
+                    <!-- 1. Linear Stretch Controls -->
+                    <TextBlock Text="Linear Stretch" Classes="SectionHeader"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Grid.Column="0" IsChecked="{Binding EnableBlackPointAdjustment}" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="Black Point" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding LinearStretchBlackPointPercentage, StringFormat='{}{0:F1}%'}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    </Grid>
+
+                    <Slider Minimum="0" Maximum="100" Value="{Binding LinearStretchBlackPointPercentage}"
+                            TickFrequency="5" TickPlacement="BottomRight"
+                            IsEnabled="{Binding EnableBlackPointAdjustment}"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Grid.Column="0" IsChecked="{Binding EnableWhitePointAdjustment}" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="White Point" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding LinearStretchWhitePointPercentage, StringFormat='{}{0:F1}%'}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    </Grid>
+
+                    <Slider Minimum="0" Maximum="100" Value="{Binding LinearStretchWhitePointPercentage}"
+                            TickFrequency="5" TickPlacement="BottomRight"
+                            IsEnabled="{Binding EnableWhitePointAdjustment}"/>
+
+                    <!-- 2. Saturation Slider -->
+                    <TextBlock Text="Saturation" Classes="SectionHeader"/>
+                    <TextBlock Text="{Binding SaturationPercentage, StringFormat='{}{0:F0}%'}" HorizontalAlignment="Right" Margin="0,-25,0,0"/>
+                    <Slider Minimum="0" Maximum="200" Value="{Binding SaturationPercentage}"
+                            TickFrequency="10" TickPlacement="BottomRight"/>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" Content="Subtle" HorizontalAlignment="Center"
+                                Command="{Binding SetSaturationCommand}" CommandParameter="85"/>
+                        <Button Grid.Column="1" Content="Neutral" HorizontalAlignment="Center"
+                                Command="{Binding SetSaturationCommand}" CommandParameter="100"/>
+                        <Button Grid.Column="2" Content="Default" HorizontalAlignment="Center"
+                                Command="{Binding SetSaturationCommand}" CommandParameter="115"/>
+                        <Button Grid.Column="3" Content="Vibrant" HorizontalAlignment="Center"
+                                Command="{Binding SetSaturationCommand}" CommandParameter="130"/>
+                    </Grid>
+
+                    <!-- 3. Adaptive Sharpen Toggle -->
+                    <TextBlock Text="Sharpening" Classes="SectionHeader"/>
+                    <CheckBox Content="Apply Sharpening" IsChecked="{Binding AdaptiveSharpen}"/>
+
+                    <!-- Session-Wide Settings Header -->
+                    <Border Background="{DynamicResource SystemAccentColorLight2}" CornerRadius="4" Margin="0,20,0,10" Padding="10,5">
+                        <TextBlock Text="Session-Wide Settings" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    </Border>
+
+                    <!-- 4. GPS and Metadata Removal -->
+                    <TextBlock Text="Metadata Options" Classes="SectionHeader"/>
+                    <CheckBox Content="Remove GPS Information" IsChecked="{Binding RemoveGps}"/>
+                    <CheckBox Content="Remove All Metadata" IsChecked="{Binding RemoveAllMetadata}"/>
+
+                    <!-- JPEG Quality Control -->
+                    <TextBlock Text="JPEG Quality" Classes="SectionHeader"/>
+                    <TextBlock Text="{Binding JpegQuality}" HorizontalAlignment="Right" Margin="0,-25,0,0"/>
+                    <Slider Minimum="50" Maximum="100" Value="{Binding JpegQuality}"
+                            TickFrequency="5" TickPlacement="BottomRight"
+                            IsEnabled="{Binding !IsJpegQualityLocked}"/>
+                    <TextBlock Text="Quality is locked after processing begins"
+                               Foreground="Gray" FontSize="12"
+                               IsVisible="{Binding IsJpegQualityLocked}"/>
+
+                    <!-- Action Buttons -->
+                    <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                        <Button Content="Optimize" Command="{Binding OptimizeCommand}"/>
+                        <Button Content="Delete Selected" Command="{Binding DeleteSelectedCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Notification Panel -->
+            <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1"
+                BorderBrush="Gray" BorderThickness="1" Margin="5">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <TextBlock Grid.Row="0" Text="Notifications" FontWeight="Bold" Margin="5,5,0,5"/>
+
+                    <!-- Notification List -->
+                    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding Notifications}" Height="80">
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </DockPanel>
 </Window>
