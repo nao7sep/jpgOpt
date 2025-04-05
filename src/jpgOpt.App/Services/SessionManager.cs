@@ -12,8 +12,6 @@ public class SessionManager
 {
     private const string SessionFileName = "session.json";
 
-    private const uint DefaultJpegQuality = 85;
-
     private static readonly JsonSerializerOptions _jsonOptions = new()
     {
         WriteIndented = true,
@@ -40,8 +38,10 @@ public class SessionManager
             OutputDirectoryPath = normalizedDirectoryPath,
             OutputDirectory = new DirectoryInfo(normalizedDirectoryPath),
             OutputFile = fileInfo,
-            JpegQuality = DefaultJpegQuality,
-            IsJpegQualityLocked = false
+            RemoveGps = SessionDefaults.RemoveGps,
+            RemoveAllMetadata = SessionDefaults.RemoveAllMetadata,
+            JpegQuality = SessionDefaults.JpegQuality,
+            IsSessionLocked = SessionDefaults.IsSessionLocked
         };
 
         return session;

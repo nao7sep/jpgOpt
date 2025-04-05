@@ -22,10 +22,6 @@ public class OptimizationTask
 
     public bool AdaptiveSharpen { get; set; }
 
-    public bool RemovedGps { get; set; }
-
-    public bool RemovedAllMetadata { get; set; }
-
     public string OutputFileName { get; set; } = null!;
 
     public DateTime? CompletedAtUtc { get; set; }

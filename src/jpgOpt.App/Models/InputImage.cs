@@ -26,9 +26,5 @@ public class InputImage
 
     public bool AdaptiveSharpen { get; set; }
 
-    public bool RemoveGps { get; set; }
-
-    public bool RemoveAllMetadata { get; set; }
-
     public string OutputFileName { get; set; } = null!;
 }

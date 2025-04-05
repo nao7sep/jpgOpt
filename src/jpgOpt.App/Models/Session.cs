@@ -22,9 +22,13 @@ public class Session
     [JsonIgnore]
     public FileInfo OutputFile { get; set; } = null!;
 
+    public bool RemoveGps { get; set; }
+
+    public bool RemoveAllMetadata { get; set; }
+
     public uint JpegQuality { get; set; }
 
-    public bool IsJpegQualityLocked { get; set; }
+    public bool IsSessionLocked { get; set; }
 
     public IList<InputImage> InputImages { get; set; } = [];
 
