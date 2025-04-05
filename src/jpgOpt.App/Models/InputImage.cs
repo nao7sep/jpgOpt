@@ -12,7 +12,7 @@ public class InputImage
 
     public long FileLength { get; set; }
 
-    public string XxHashDigest { get; set; } = null!;
+    public string HashDigest { get; set; } = null!;
 
     public int Width { get; set; }
 
