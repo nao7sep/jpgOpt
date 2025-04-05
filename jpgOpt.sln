@@ -4,13 +4,7 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jpgOpt.App", "src\jpgOpt.App\jpgOpt.App.csproj", "{9733EAAD-3EFE-4569-FAA7-A0E4B15F35D5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jpgOpt.Core", "src\jpgOpt.Core\jpgOpt.Core.csproj", "{09792A30-411B-4643-E817-13239F335A4E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jpgOpt.Core.Tests", "tests\jpgOpt.Core.Tests\jpgOpt.Core.Tests.csproj", "{821F0F34-820B-5FF0-2FB3-1B2D94B6F3FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,22 +16,12 @@ Global
 		{9733EAAD-3EFE-4569-FAA7-A0E4B15F35D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9733EAAD-3EFE-4569-FAA7-A0E4B15F35D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9733EAAD-3EFE-4569-FAA7-A0E4B15F35D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09792A30-411B-4643-E817-13239F335A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09792A30-411B-4643-E817-13239F335A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09792A30-411B-4643-E817-13239F335A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09792A30-411B-4643-E817-13239F335A4E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{821F0F34-820B-5FF0-2FB3-1B2D94B6F3FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{821F0F34-820B-5FF0-2FB3-1B2D94B6F3FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{821F0F34-820B-5FF0-2FB3-1B2D94B6F3FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{821F0F34-820B-5FF0-2FB3-1B2D94B6F3FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9733EAAD-3EFE-4569-FAA7-A0E4B15F35D5} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
-		{09792A30-411B-4643-E817-13239F335A4E} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
-		{821F0F34-820B-5FF0-2FB3-1B2D94B6F3FB} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1A64B6D-DD5A-4123-99FC-132079793645}
