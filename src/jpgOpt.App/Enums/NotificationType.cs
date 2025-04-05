@@ -1,4 +1,4 @@
-namespace jpgOpt.Core.Enums;
+namespace jpgOpt.App.Enums;
 
 public enum NotificationType
 {

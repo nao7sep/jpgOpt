@@ -1,7 +1,7 @@
-using System.Text.Json.Serialization;
+using System;
 using Avalonia.Media.Imaging;
 
-namespace jpgOpt.Core.Models;
+namespace jpgOpt.App.Models;
 
 public class ThumbnailCacheEntry : IDisposable
 {
@@ -11,7 +11,6 @@ public class ThumbnailCacheEntry : IDisposable
 
     public Guid InputImageId { get; set; }
 
-    [JsonIgnore]
     public InputImage InputImage { get; set; } = null!;
 
     public Bitmap Thumbnail { get; set; } = null!;

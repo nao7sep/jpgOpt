@@ -1,6 +1,7 @@
-using jpgOpt.Core.Enums;
+using System;
+using jpgOpt.App.Enums;
 
-namespace jpgOpt.Core.Models;
+namespace jpgOpt.App.Models;
 
 public class AppNotification
 {

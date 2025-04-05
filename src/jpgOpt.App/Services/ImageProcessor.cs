@@ -1,13 +1,22 @@
+using System;
+using System.IO;
 using ImageMagick;
 
-namespace jpgOpt.Core.Services;
+namespace jpgOpt.App.Services;
 
 public static class ImageProcessor
 {
-    public static void ProcessImage(Stream inputStream,
-        float linearStretchBlackPointPercentage, float linearStretchWhitePointPercentage,
-        float saturationPercentage, bool adaptiveSharpen, bool removeGps, bool removeAllMetadata,
-        Stream outputStream, MagickFormat format, uint? jpegQuality)
+    public static void ProcessImage(
+        Stream inputStream,
+        float linearStretchBlackPointPercentage,
+        float linearStretchWhitePointPercentage,
+        float saturationPercentage,
+        bool adaptiveSharpen,
+        bool removeGps,
+        bool removeAllMetadata,
+        Stream outputStream,
+        MagickFormat format,
+        uint? jpegQuality)
     {
         // https://github.com/nao7sep/_imgLab/blob/main/_imgLab/Utility.cs
 

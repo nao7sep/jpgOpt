@@ -1,6 +1,7 @@
+using System;
 using System.Text.Json.Serialization;
 
-namespace jpgOpt.Core.Models;
+namespace jpgOpt.App.Models;
 
 public class OptimizationTask
 {

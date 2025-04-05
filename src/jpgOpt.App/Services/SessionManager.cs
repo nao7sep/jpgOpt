@@ -1,9 +1,12 @@
+using System;
+using System.IO;
 using System.Text.Json;
 using System.Text.Encodings.Web;
-using jpgOpt.Core.Models;
+using System.Threading.Tasks;
+using jpgOpt.App.Models;
 using pawKit.Core.IO;
 
-namespace jpgOpt.Core.Services;
+namespace jpgOpt.App.Services;
 
 public class SessionManager
 {

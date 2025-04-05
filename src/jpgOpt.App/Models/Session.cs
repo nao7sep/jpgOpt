@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.Json.Serialization;
 
-namespace jpgOpt.Core.Models;
+namespace jpgOpt.App.Models;
 
 public class Session
 {
@@ -23,9 +26,9 @@ public class Session
 
     public bool IsJpegQualityLocked { get; set; }
 
-    public List<InputImage> InputImages { get; set; } = [];
+    public IList<InputImage> InputImages { get; set; } = [];
 
-    public List<OptimizationTask> OptimizationTasks { get; set; } = [];
+    public IList<OptimizationTask> OptimizationTasks { get; set; } = [];
 
-    public List<AppNotification> Notifications { get; set; } = [];
+    public IList<AppNotification> Notifications { get; set; } = [];
 }

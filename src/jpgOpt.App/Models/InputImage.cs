@@ -1,4 +1,6 @@
-namespace jpgOpt.Core.Models;
+using System;
+
+namespace jpgOpt.App.Models;
 
 public class InputImage
 {
