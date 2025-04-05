@@ -116,7 +116,7 @@
                         <TextBlock Text="Image-Specific Settings" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </Border>
 
-                    <!-- 1. Linear Stretch Controls -->
+                    <!-- Linear Stretch Controls -->
                     <TextBlock Text="Linear Stretch" Classes="SectionHeader"/>
 
                     <Grid>
@@ -151,7 +151,7 @@
                             TickFrequency="5" TickPlacement="BottomRight"
                             IsEnabled="{Binding EnableWhitePointAdjustment}"/>
 
-                    <!-- 2. Saturation Slider -->
+                    <!-- Saturation Slider -->
                     <TextBlock Text="Saturation" Classes="SectionHeader"/>
                     <TextBlock Text="{Binding SaturationPercentage, StringFormat='{}{0:F0}%'}" HorizontalAlignment="Right" Margin="0,-25,0,0"/>
                     <Slider Minimum="0" Maximum="200" Value="{Binding SaturationPercentage}"
@@ -175,7 +175,7 @@
                                 Command="{Binding SetSaturationCommand}" CommandParameter="130"/>
                     </Grid>
 
-                    <!-- 3. Adaptive Sharpen Toggle -->
+                    <!-- Adaptive Sharpen Toggle -->
                     <TextBlock Text="Sharpening" Classes="SectionHeader"/>
                     <CheckBox Content="Apply Sharpening" IsChecked="{Binding AdaptiveSharpen}"/>
 
@@ -184,20 +184,26 @@
                         <TextBlock Text="Session-Wide Settings" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </Border>
 
-                    <!-- 4. GPS and Metadata Removal -->
+                    <!-- GPS and Metadata Removal -->
                     <TextBlock Text="Metadata Options" Classes="SectionHeader"/>
-                    <CheckBox Content="Remove GPS Information" IsChecked="{Binding RemoveGps}"/>
-                    <CheckBox Content="Remove All Metadata" IsChecked="{Binding RemoveAllMetadata}"/>
+                    <CheckBox Content="Remove GPS Information" IsChecked="{Binding RemoveGps}" IsEnabled="{Binding !IsSessionLocked}"/>
+                    <CheckBox Content="Remove All Metadata" IsChecked="{Binding RemoveAllMetadata}" IsEnabled="{Binding !IsSessionLocked}"/>
 
                     <!-- JPEG Quality Control -->
                     <TextBlock Text="JPEG Quality" Classes="SectionHeader"/>
                     <TextBlock Text="{Binding JpegQuality}" HorizontalAlignment="Right" Margin="0,-25,0,0"/>
                     <Slider Minimum="50" Maximum="100" Value="{Binding JpegQuality}"
                             TickFrequency="5" TickPlacement="BottomRight"
-                            IsEnabled="{Binding !IsJpegQualityLocked}"/>
-                    <TextBlock Text="Quality is locked after processing begins"
-                               Foreground="Gray" FontSize="12"
-                               IsVisible="{Binding IsJpegQualityLocked}"/>
+                            IsEnabled="{Binding !IsSessionLocked}"/>
+
+                    <!-- Session Lock Warning -->
+                    <Border Background="#FFEEEE" BorderBrush="#FF6666" BorderThickness="1"
+                            CornerRadius="4" Padding="8" Margin="0,5,0,10"
+                            IsVisible="{Binding IsSessionLocked}">
+                        <TextBlock Text="Session settings are locked"
+                                   FontWeight="SemiBold" Foreground="#CC0000"
+                                   HorizontalAlignment="Center"/>
+                    </Border>
 
                     <!-- Action Buttons -->
                     <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
@@ -222,7 +228,7 @@
 
                     <!-- Notification List -->
                     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                        <ItemsControl ItemsSource="{Binding Notifications}" Height="80">
+                        <ItemsControl x:Name="NotificationList" Height="80">
                         </ItemsControl>
                     </ScrollViewer>
                 </Grid>
