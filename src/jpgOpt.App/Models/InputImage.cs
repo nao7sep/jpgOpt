@@ -18,7 +18,11 @@ public class InputImage
 
     public int Height { get; set; }
 
+    public bool EnableBlackPointAdjustment { get; set; }
+
     public float LinearStretchBlackPointPercentage { get; set; }
+
+    public bool EnableWhitePointAdjustment { get; set; }
 
     public float LinearStretchWhitePointPercentage { get; set; }
 
