@@ -7,9 +7,10 @@
 4. [UI & UX Requirements](#ui--ux-requirements)
 5. [Session & Output Management](#session--output-management)
 6. [Models & Data Structures](#models--data-structures)
+   - [Session](#model-session)
    - [InputImage](#model-inputimage)
    - [OptimizationTask](#model-optimizationtask)
-   - [ThumbnailData](#model-thumbnaildata)
+   - [AppConfiguration](#model-appconfiguration)
    - [AppNotification](#model-appnotification--notificationtype)
 7. [Image Processing Pipeline](#image-processing-pipeline)
 8. [Thumbnail Caching](#thumbnail-caching)
@@ -47,13 +48,14 @@ This **Avalonia UI** application enables users to:
    - Updates thumbnails in real-time for linear stretch and saturation changes
 
 2. **Output Folder**
-   - Named `jpgOpt-<timestamp>` (e.g., `jpgOpt-20250401T144510Z`)
+   - Named `jpgOpt-<timestamp>` (e.g., `jpgOpt-20250401-144510`)
    - Contains optimized images and session.json
 
 3. **Data Models**
+   - **`Session`**: Overall session information
    - **`InputImage`**: Original image properties and editing parameters
    - **`OptimizationTask`**: Queued jobs with parameters at queue time
-   - **`ThumbnailData`**: In-memory thumbnail cache
+   - **`AppConfiguration`**: Application configuration settings
    - **`AppNotification`**: Warnings and errors
 
 4. **Processing Behavior**
@@ -140,17 +142,35 @@ This **Avalonia UI** application enables users to:
    - Includes InputImages, OptimizationTasks, and notifications
 
 2. **Output Structure**
-   - Directory: `jpgOpt-<UTC timestamp in yyyyMMdd'T'HHmmss'Z'>`
+   - Directory: `jpgOpt-<Local timestamp in yyyyMMdd-HHmmss>`
    - Contains processed images and session data
 
 3. **Session File (`session.json`)**
    - Lists for InputImages, OptimizationTasks, and notifications
    - Unique SessionId (GUID)
-   - No absolute file paths stored
+   - Note: InputImage.FilePath may contain absolute file paths as source images are typically in their final storage locations
 
 ---
 
 ## 6. Models & Data Structures
+
+### Model: `Session`
+```csharp
+public class Session
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+    public string OutputDirectory { get; set; }
+    public int JpegQuality { get; set; }
+    public List<InputImage> InputImages { get; set; } = new List<InputImage>();
+    public List<OptimizationTask> OptimizationTasks { get; set; } = new List<OptimizationTask>();
+    public List<AppNotification> Notifications { get; set; } = new List<AppNotification>();
+}
+```
+**Notes**:
+- Represents the overall session information
+- Contains references to all images, tasks, and notifications
+- Stores the JPEG quality setting that becomes immutable after processing begins
 
 ### Model: `InputImage`
 ```csharp
@@ -158,16 +178,15 @@ public class InputImage
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string FilePath { get; set; }
+    public DateTime FileLastModifiedUtc { get; set; }
     public long FileLength { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
-    public string Hash { get; set; }
-    public DateTime FileLastModifiedUtc { get; set; }
 
     // Optimization parameters
-    public float LinearStretchBlackPointPercentage { get; set; }
-    public float LinearStretchWhitePointPercentage { get; set; }
-    public float SaturationAdjustment { get; set; }
+    public float? LinearStretchBlackPointPercentage { get; set; }
+    public float? LinearStretchWhitePointPercentage { get; set; }
+    public float SaturationAdjustment { get; set; } = 100;
     public bool AdaptiveSharpen { get; set; } = false;
 
     // Metadata parameters
@@ -176,7 +195,9 @@ public class InputImage
 }
 ```
 **Notes**:
-- `Hash` detects file modifications
+- File-related properties are grouped together before image-related properties
+- Linear stretch parameters are nullable - if null, they weren't applied
+- Saturation is not nullable as 100 means no change
 - Parameters control image adjustments
 
 ### Model: `OptimizationTask`
@@ -188,8 +209,8 @@ public class OptimizationTask
     public DateTime QueuedAtUtc { get; set; }
 
     // Optimization parameters (copied from InputImage at queue time)
-    public float LinearStretchBlackPointPercentage { get; set; }
-    public float LinearStretchWhitePointPercentage { get; set; }
+    public float? LinearStretchBlackPointPercentage { get; set; }
+    public float? LinearStretchWhitePointPercentage { get; set; }
     public float SaturationAdjustment { get; set; }
     public bool AdaptiveSharpen { get; set; }
 
@@ -197,79 +218,32 @@ public class OptimizationTask
     public bool RemovedAllMetadata { get; set; }
     public bool RemovedGps { get; set; }
 
-    public bool Completed { get; set; }
     public DateTime? CompletedAtUtc { get; set; }
 }
 ```
 **Notes**:
 - Captures settings at queue time
 - Output file path derived from InputPath and session output directory
+- InputPath must be identical to FilePath of the corresponding InputImage for joining tables
+- Linear stretch parameters are nullable - if null, they weren't applied
+- Task is considered completed when CompletedAtUtc is not null
 
-### Model: `ThumbnailData`
+### Model: `AppConfiguration`
 ```csharp
-public class ThumbnailData : IDisposable
+public class AppConfiguration
 {
-    public Guid ImageId { get; set; }
-
-    private IMagickImage<byte>? _baseThumbnail;
-    public IMagickImage<byte>? BaseThumbnail
-    {
-        get => _baseThumbnail;
-        set
-        {
-            _baseThumbnail?.Dispose();
-            _baseThumbnail = value;
-        }
-    }
-
-    private Bitmap? _displayThumbnail;
-    public Bitmap? DisplayThumbnail
-    {
-        get => _displayThumbnail;
-        set
-        {
-            _displayThumbnail?.Dispose();
-            _displayThumbnail = value;
-        }
-    }
-
-    public int Width => BaseThumbnail?.Width ?? 0;
-    public int Height => BaseThumbnail?.Height ?? 0;
-
-    private bool _disposed = false;
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (_disposed) return;
-
-        if (disposing)
-        {
-            _baseThumbnail?.Dispose();
-            _displayThumbnail?.Dispose();
-        }
-
-        _baseThumbnail = null;
-        _displayThumbnail = null;
-
-        _disposed = true;
-    }
+    public int DefaultJpegQuality { get; set; } = 85;
+    public int MaxConcurrentTasks { get; set; } = 3;
+    public int ThumbnailSize { get; set; } = 200;
+    public bool DarkMode { get; set; } = false;
+    public string DefaultOutputDirectory { get; set; }
+    public LogLevel MinimumLogLevel { get; set; } = LogLevel.Information;
 }
 ```
 **Notes**:
-- Stores unadjusted thumbnail (`BaseThumbnail`) and display-ready thumbnail (`DisplayThumbnail`)
-- When parameters change:
-  1. Clone BaseThumbnail
-  2. Apply adjustments to clone
-  3. Convert to Avalonia Bitmap
-  4. Update DisplayThumbnail (old one is disposed)
-  5. UI updates automatically if bound to DisplayThumbnail
-- Implements IDisposable for resource management
+- Stores application-wide configuration settings
+- Loaded from appsettings.json using Microsoft.Extensions.Configuration
+- Can be modified through a settings UI
 
 ### Model: `AppNotification` & `NotificationType`
 ```csharp
@@ -315,16 +289,17 @@ Using **Magick.NET**, each queued task processes images as follows:
 - Regenerated on session load or parameter adjustments
 - Adaptive sharpen changes do not trigger updates
 
+**Note**: The implementation details of thumbnail caching will be determined during development. The specification does not define a specific model class for this functionality at this time.
+
 ---
 
 ## 9. Restoring a Previous Session
 
 When reopening an existing session:
 1. Load `session.json` for InputImages, OptimizationTasks, and notifications
-2. Verify file existence (missing files highlighted)
-3. Recompute hashes (mismatches flagged)
-4. Identify untracked output files (warning with delete/keep option)
-5. Enable continuation of adjustments or re-running tasks
+2. Verify file existence (missing files will be ignored in the thumbnail list)
+3. Display notifications for missing files (properly colored to gain user attention)
+4. Enable continuation of adjustments or re-running tasks
 
 ---
 
@@ -341,11 +316,13 @@ When reopening an existing session:
 
 1. **Output Filename Conflicts**
    - Prevents adding input files with identical filenames
+   - When identically named files are attempted to be added, they will be ignored
+   - User will receive notifications about ignored files
    - Ensures unique output without renaming
 
 2. **Large Batches**
    - Designed for ~100 images
-   - Virtualization or LRU caching for larger batches
+   - Virtualization for larger batches
 
 ---
 
