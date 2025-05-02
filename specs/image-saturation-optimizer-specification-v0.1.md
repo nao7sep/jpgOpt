@@ -160,7 +160,7 @@ public class Session
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
-    public string OutputDirectory { get; set; }
+    public string OutputDirectoryPath { get; set; }
     public int JpegQuality { get; set; }
     public List<InputImage> InputImages { get; set; } = new List<InputImage>();
     public List<OptimizationTask> OptimizationTasks { get; set; } = new List<OptimizationTask>();
@@ -178,7 +178,7 @@ public class InputImage
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string FilePath { get; set; }
-    public DateTime FileLastModifiedUtc { get; set; }
+    public DateTime FileLastModifiedAtUtc { get; set; }
     public long FileLength { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
@@ -205,7 +205,7 @@ public class InputImage
 public class OptimizationTask
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public string InputPath { get; set; }
+    public string InputImagePath { get; set; }
     public DateTime QueuedAtUtc { get; set; }
 
     // Optimization parameters (copied from InputImage at queue time)
@@ -223,8 +223,8 @@ public class OptimizationTask
 ```
 **Notes**:
 - Captures settings at queue time
-- Output file path derived from InputPath and session output directory
-- InputPath must be identical to FilePath of the corresponding InputImage for joining tables
+- Output file path derived from InputImagePath and session output directory
+- InputImagePath must be identical to FilePath of the corresponding InputImage for joining tables
 - Linear stretch parameters are nullable - if null, they weren't applied
 - Task is considered completed when CompletedAtUtc is not null
 
@@ -232,18 +232,22 @@ public class OptimizationTask
 ```csharp
 public class AppConfiguration
 {
+    // Output settings
+    public string DefaultOutputDirectoryPath { get; set; }
     public int DefaultJpegQuality { get; set; } = 85;
+
+    // Performance settings
     public int MaxConcurrentTasks { get; set; } = 3;
-    public int ThumbnailSize { get; set; } = 200;
-    public bool DarkMode { get; set; } = false;
-    public string DefaultOutputDirectory { get; set; }
-    public LogLevel MinimumLogLevel { get; set; } = LogLevel.Information;
+
+    // UI settings
+    public int ThumbnailWidth { get; set; } = 200;
+    public int ThumbnailHeight { get; set; } = 200;
 }
 ```
 **Notes**:
 - Stores application-wide configuration settings
 - Loaded from appsettings.json using Microsoft.Extensions.Configuration
-- Can be modified through a settings UI
+- Configuration is read-only at runtime; appsettings.json content is not modified through the UI
 
 ### Model: `AppNotification` & `NotificationType`
 ```csharp
