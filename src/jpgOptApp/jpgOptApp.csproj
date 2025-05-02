@@ -8,7 +8,7 @@
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 
         <!-- Project Metadata -->
-        <AssemblyTitle>jpgOpt</AssemblyTitle>
+        <AssemblyTitle>jpgOptApp</AssemblyTitle>
         <Product>jpgOpt</Product>
         <Description>A desktop application for optimizing JPG image saturation.</Description>
         <Company>Purrfect Code</Company>
