@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace jpgOpt.App;
+namespace jpgOptApp;
 
 sealed class Program
 {

@@ -38,6 +38,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="../../../pawKit/src/pawKit.Lib/pawKit.Lib.csproj" />
+        <ProjectReference Include="../../../pawKit/src/pawKitLib/pawKitLib.csproj" />
     </ItemGroup>
 </Project>

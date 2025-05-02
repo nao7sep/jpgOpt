@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace jpgOpt.App.Views;
+namespace jpgOptApp.Views;
 
 public partial class MainWindow : Window
 {

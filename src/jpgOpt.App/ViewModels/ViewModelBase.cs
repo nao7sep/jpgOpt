@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace jpgOpt.App.ViewModels;
+namespace jpgOptApp.ViewModels;
 
 public class ViewModelBase : ObservableObject
 {
