@@ -10,34 +10,31 @@
         <!-- Project Metadata -->
         <AssemblyTitle>jpgOptApp</AssemblyTitle>
         <Product>jpgOpt</Product>
-        <Description>A desktop application for optimizing JPG image saturation.</Description>
+        <Description>A desktop utility that optimizes JPEG images by adjusting saturation and quality.</Description>
         <Company>Purrfect Code</Company>
         <Authors>nao7sep</Authors>
         <Copyright>Copyright © 2025</Copyright>
         <!-- Note: When updating version here, also update version in app.manifest -->
         <Version>0.1</Version>
-        <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+        <PackageLicenseExpression>GPL-3.0</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/nao7sep/jpgOpt</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
+        <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.2.7" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.2.7" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.7" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.7" />
+        <PackageReference Include="Avalonia" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.0" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Include="Avalonia.Diagnostics" Version="11.2.7">
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.0">
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="../../../pawKit/src/pawKitLib/pawKitLib.csproj" />
     </ItemGroup>
 </Project>
